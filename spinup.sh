@@ -2,23 +2,31 @@
 
 VMHOST="beast"
 DEFAULTIMAGE="deb9-base"
-#USER: sysuser
 PUBKEYFILE="~/.ssh/id_rsa.pub"
 SPINUPSCRIPT="/opt/virt-spinup/spinupmachine.sh"
 PASSWDFILE="passwords.log"
 USERNAME="sysuser"
 ANSIBLE_PASSWDFILE="passwords.yml"
 
-## add stuff realted to parameters
-NEWHOST="deb9-test"
+if [ "x" = "x$1" ]; then
+  echo "usage $0 <newhost> <host to clone from>"
+  exit 2
+fi
+NEWHOST="$1"
 
-# ssh $VMHOST sudo $SPINUPSCRIPT $NEWHOST $DEFAULTIMAGE > $PASSWDFILE
-# if [ "$?" -gt "0" ]; then
-#   echo "failed - see output above for possible reasons"
-#   exit 1
-# fi
+if [ "x" = "x$2" ]; then
+    OLDHOST="$2"
+else
+    OLDHOST="$DEFAULTIMAGE"
+fi
 
-echo "success"
+echo "Cloning $OLDHOST to $NEWHOST on VM host $VMHOST"
+
+ssh $VMHOST sudo $SPINUPSCRIPT $NEWHOST $OLDHOST > $PASSWDFILE
+if [ "$?" -gt "0" ]; then
+  echo "failed - see output above for possible reasons"
+  exit 1
+fi
 
 USERPASS=$(cat $PASSWDFILE | grep $USERNAME | cut -d'"' -f2)
 ROOTPASS=$(cat $PASSWDFILE | grep root | cut -d'"' -f2)

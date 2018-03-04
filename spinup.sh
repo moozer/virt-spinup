@@ -15,9 +15,9 @@ fi
 NEWHOST="$1"
 
 if [ "x" = "x$2" ]; then
-    OLDHOST="$2"
-else
     OLDHOST="$DEFAULTIMAGE"
+else
+    OLDHOST="$2"
 fi
 
 echo "Cloning $OLDHOST to $NEWHOST on VM host $VMHOST"

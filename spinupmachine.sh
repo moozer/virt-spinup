@@ -35,7 +35,7 @@ else
 	echo "- destination qcow image already exists - skipping" > /dev/stderr
 fi
 
-if virsh list --all | grep $NEWDOMAIN; then
+if virsh list --all | grep " $NEWDOMAIN "; then
 	echo "$NEWDOMAIN already exists, please delete before continuing" > /dev/stderr
 	exit 1
 else

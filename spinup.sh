@@ -46,11 +46,10 @@ echo "remove entry in known_hosts corresponding to any previous $NEWHOST"
 ssh-keygen -R $NEWHOST
 ssh-keygen -R $NEWHOST_IP
 
-SSHPASS=$USERPASS
 echo "add entry to known_hosts"
-sshpass -e ssh -o StrictHostKeyChecking=no $USERNAME@$NEWHOST exit
+SSHPASS=$USERPASS sshpass -e ssh -o StrictHostKeyChecking=no $USERNAME@$NEWHOST exit
 echo "add public key"
-sshpass -e ssh-copy-id $USERNAME@$NEWHOST
+SSHPASS=$USERPASS sshpass -e ssh-copy-id $USERNAME@$NEWHOST
 
 echo creating inventory stuff
 mkdir -p host_vars/$NEWHOST

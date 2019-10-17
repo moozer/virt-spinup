@@ -3,7 +3,7 @@
 # config options
 # this is default values, source will override
 VMHOST="beast"
-DEFAULTIMAGE="deb9-base"
+SOURCEHOST="deb9-base"
 PUBKEYFILE="~/.ssh/id_rsa.pub"
 SPINUPSCRIPT="/opt/virt-spinup/spinupmachine.sh"
 PASSWDFILE="passwords.log"
@@ -25,7 +25,7 @@ show_params()
   echo "  VMHOST: $VMHOST"
   echo "  SOURCEHOST: $SOURCEHOST"
   echo "  SPIUNUPSCRIPT: $SPINUPSCRIPT"
-  echo "  PASSWDFILE: $PASSWORDFILE"
+  echo "  PASSWDFILE: $PASSWDFILE"
   echo "  USERNAME: $USERNAME"
   echo "  ANSIBLE_PASSWDFILE: $ANSIBLE_PASSWDFILE"
   echo ""

@@ -1,5 +1,7 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
+# config options
+# this is default values, source will override
 VMHOST="beast"
 DEFAULTIMAGE="deb9-base"
 PUBKEYFILE="~/.ssh/id_rsa.pub"
@@ -8,21 +10,55 @@ PASSWDFILE="passwords.log"
 USERNAME="sysuser"
 ANSIBLE_PASSWDFILE="passwords.yml"
 
+# ----
+show_usage()
+{
+  echo "usage $0 <config> <newhostname> <sourcehost>"
+  echo "  <config>	config file to source"
+  echo "  <newhostname>	new vm name"
+  echo "  <sourcehost>	(optional) VM to clone"
+}
+
+show_params()
+{
+  echo "Parameters:"
+  echo "  VMHOST: $VMHOST"
+  echo "  SOURCEHOST: $SOURCEHOST"
+  echo "  SPIUNUPSCRIPT: $SPINUPSCRIPT"
+  echo "  PASSWDFILE: $PASSWORDFILE"
+  echo "  USERNAME: $USERNAME"
+  echo "  ANSIBLE_PASSWDFILE: $ANSIBLE_PASSWDFILE"
+  echo ""
+}
+
+
+# --------------------
+#  Setting up params
+# --------------------
 if [ "x" = "x$1" ]; then
-  echo "usage $0 <newhost> <host to clone from>"
+  show_usage
   exit 2
 fi
-NEWHOST="$1"
+CONF_FILE="$1"
+echo sourcing config from $CONF_FILE
+. $CONF_FILE
 
-if [ "x" = "x$2" ]; then
-    OLDHOST="$DEFAULTIMAGE"
-else
-    OLDHOST="$2"
+if [ "x" == "x$2" ]; then
+  show_usage
+  exit 3
 fi
+NEWHOST="$2"
+echo cloning to $NEWHOST
 
-echo "Cloning $OLDHOST to $NEWHOST on VM host $VMHOST"
+if [ "x" != "x$3" ]; then
+    SOURCEHOST="$3"
+fi
+echo cloning from $SOURCEHOST
 
-ssh $VMHOST sudo $SPINUPSCRIPT $NEWHOST $OLDHOST > $PASSWDFILE
+show_params
+
+echo "running spinupscript"
+ssh $VMHOST sudo $SPINUPSCRIPT $NEWHOST $SOURCEHOST > $PASSWDFILE
 if [ "$?" -gt "0" ]; then
   echo "failed - see output above for possible reasons"
   exit 1

@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# to ensure early fail
+set -e
+
 PATH=/usr/bin:/bin
 
 ORIGINALDOMAIN="deb9-base"

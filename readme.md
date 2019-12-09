@@ -20,6 +20,8 @@ Requirements:
 
 To install, run the installation script: `./install_spinup.sh kvm-host`
 
+Warning: This will automatically install `sudo` and `libfs-tools`
+
 Usage 
 -------------
 

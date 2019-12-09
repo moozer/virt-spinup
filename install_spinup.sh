@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 if [ "x" == "x$1" ]; then
 	echo "usage: $0 <host-name>"
 	exit 1
